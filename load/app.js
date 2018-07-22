@@ -16,13 +16,19 @@ const Yargs =require('yargs');
 // console.log(res);
 
 var argv = Yargs.argv;
+// console.log(process.argv);
 command = process.argv[2];
 
 if(command == 'add'){
   addnot = note.addNote(argv.title,argv.body);
   console.log(addnot);
 }else if (command == 'rm') {
-  note.rmNote(argv.title,argv.body);
-}else{
+  rmnote= note.rmNote(argv.title);
+  console.log(rmnote);
+}else if(command == 'get'){
+  note.getall(argv.title);
+}else if(command == 'update'){
+  note.update(argv.title,argv.body);
+}else {
   console.log('command not found');
 }
