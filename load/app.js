@@ -15,7 +15,17 @@ const Yargs =require('yargs');
 // res = note.addNote();
 // console.log(res);
 
-var argv = Yargs.argv;
+var argv = Yargs
+.command('add','add a new note',
+{ title: {
+  describe: "enter the title of the note",
+  demand: true,
+  alias: 't'
+}
+
+})
+.help()
+.argv;
 // console.log(process.argv);
 command = process.argv[2];
 
