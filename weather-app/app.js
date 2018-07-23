@@ -23,7 +23,12 @@ address.geocodeAddress(input.a,function(error, results){
     console.log(error);
   }else {
     console.log(JSON.stringify(results,undefined,2));
+    address.weather(results.latitude,results.longitude,function(error, results){
+      if(error){
+        console.log(error);
+      }else {
+        console.log(JSON.stringify(results, undefined, 4));
+      }
+    });
   }
 });
-
-address.weather();

@@ -26,17 +26,20 @@ geocodeAddress = function(address, callback){
   });
 }
 
-weather = function(){
+weather = function(lat,lng,callback){
   request({
-    url:'https://api.darksky.net/forecast/868b598656755a82c08654fbe716a598/42.3601,-71.0589',
+    url:'https://api.darksky.net/forecast/868b598656755a82c08654fbe716a598/'+lat+','+lng,
     json: true
   },function(error,response,body){
     if(error){
-      console.log('check eror'+ error);
+      callback('check eror'+ error);
     }else if (response.statusCode == '400') {
-      console.log('unable to connect to the api');
+      callback('unable to connect to the api');
     }else if (response.statusCode == '200'){
-      console.log(body.currently);
+      callback(undefined,{
+        currently: body.currently
+      });
+
     }
   });
 
