@@ -7,14 +7,14 @@ MongoClient.connect('mongodb://localhost:27017',(err,client) => {
    console.log('Connected to mongoDb server');
 
    const db = client.db('TodoApi');
-   // db.collection('todos').insertOne({
-   //   text: 'have to do',
-   //   status: true},(err, result) => {
-   //   if(err){
-   //     return console.log('unable to insert to-do')
-   //     }
-   //   console.log(JSON.stringify(result.ops , undefined, 2));
-   // });
+   db.collection('todos').insertOne({
+     text: 'have to do',
+     status: true},(err, result) => {
+     if(err){
+       return console.log('unable to insert to-do')
+       }
+     console.log(JSON.stringify(result.ops , undefined, 2));
+   });
 
    db.collection('todos').find({status:false}).toArray().then((docs) => {
      console.log(JSON.stringify(docs, undefined, 2));
