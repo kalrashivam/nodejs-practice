@@ -1,57 +1,49 @@
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyparser = require('body-parser');
+var {mongoose} = require('./db/db.js');
+var {Todo} = require('./models/todo.js');
+var {User} = require('./models/user.js');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+var app = express();
 
+app.use(bodyparser.json());
 
-var Todo = mongoose.model('Todo',{
-  text: {
-    type: String,
-    required: true,
-    minlength: 1,
-    trim: true
-  },
-  completed: {
-    type: Boolean,
-    default: false
-  },
-  Reminder: {
-    type: Boolean,
-    default: false
-  }
+app.listen(3000,() => {
+  console.log('listening on port 3000');
 });
 
-var User = mongoose.model('Users',{
-  email: {
-    type: String,
-    minlength: 1,
-    trim: true,
-    required: true
-  },
-  password: {
-    type: String
-  },
-  first_name: {
-    type: String,
-    minlength: 2,
-    trim: true
-  },
-  last_name: {
-    type: String,
-    minlength: 2,
-    trim: true
-  }
+app.post('/todos',(req,res) => {
+ console.log(req.body);
+ var todo = new Todo({
+   text: req.body.text
+ });
+ todo.save().then((doc) => {
+   res.send(doc);
+ }, (e) => {
+   res.status(400).send(e);
+ })
+
 });
 
-newUser = new User({
-  email: 'shivamkalra2056@gmail.com'
-})
-
-newUser.save().then((doc) => {
-  console.log(doc);
-},(error) => {
-  console.log(error);
+app.get('/todos',(req,res) => {
+  Todo.find().then((doc) => {
+    res.send((doc));
+  },(error) => {
+    res.status(400).send(e);
+  })
 });
+
+
+
+// newUser = new User({
+//   email: 'shivamkalra2056@gmail.com'
+// })
+//
+// newUser.save().then((doc) => {
+//   console.log(doc);
+// },(error) => {
+//   console.log(error);
+// });
 
 // newTodo = new Todo({
 //   text:'Buy a new Phone'
