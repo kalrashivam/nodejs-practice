@@ -3,14 +3,17 @@ var bodyparser = require('body-parser');
 var {mongoose} = require('./db/db.js');
 var {Todo} = require('./models/todo.js');
 var {User} = require('./models/user.js');
-
+const lodash = require('lodash');
+var {ObjectId} = require('mongodb');
 var app = express();
 
 app.use(bodyparser.json());
 
-app.listen(4000,() => {
-  console.log('listening on port 4000');
+app.listen(8000,() => {
+  console.log('listening on port 8000');
 });
+
+
 
 app.post('/todos',(req,res) => {
  console.log(req.body);
@@ -55,6 +58,40 @@ app.get('/Byid/:id',(req,res) => {
       res.send('Invalid Id');
     }
   }).catch(function(e){  console.log(e);})
+});
+
+app.get('/RemoveById/:id',(req,res) => {
+  console.log(JSON.stringify(req.params));
+  id = req.params.id;
+  Todo.findByIdAndRemove(id).then((todo) =>{
+    if(todo){
+      res.send(todo);
+    }else {
+      res.send('Invalid Id');
+    }
+  }).catch(function(e){  console.log(e);})
+});
+
+app.post('/update/:id',(req,res) => {
+  var id =  req.params.id;
+  console.log(id);
+  var body = lodash.pick(req,body, ['text','completed','reminder']);
+  if(!ObjectId.isValid(id)) {
+    return res.status(404).send();
+  }
+  Todo.findByIdAndUpdate(id,{
+    $set: body
+  },{
+    new: true
+  }).then((doc) => {
+    if(doc){
+      res.send(doc);
+    } else {
+      res.send('Invalid Id');
+    }
+  }).catch((e) => {
+    res.status(404).send(e);
+  });
 });
 
 
