@@ -8,8 +8,8 @@ var app = express();
 
 app.use(bodyparser.json());
 
-app.listen(3000,() => {
-  console.log('listening on port 3000');
+app.listen(4000,() => {
+  console.log('listening on port 4000');
 });
 
 app.post('/todos',(req,res) => {
@@ -33,6 +33,29 @@ app.get('/todos',(req,res) => {
   })
 });
 
+// app.post('/Byid',(req,res) => {
+//   console.log(JSON.stringify(req.body));
+//   id = req.body.id;
+//   User.findById(id).then((user) =>{
+//     if(user){
+//       res.send(user);
+//     }else {
+//       res.send('Invalid Id');
+//     }
+//   }).catch(function(e){  console.log(e);})
+// });
+
+app.get('/Byid/:id',(req,res) => {
+  console.log(JSON.stringify(req.params));
+  id = req.params.id;
+  User.findById(id).then((user) =>{
+    if(user){
+      res.send(user);
+    }else {
+      res.send('Invalid Id');
+    }
+  }).catch(function(e){  console.log(e);})
+});
 
 
 // newUser = new User({
