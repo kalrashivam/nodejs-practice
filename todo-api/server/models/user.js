@@ -5,9 +5,9 @@ var User = mongoose.model('Users',{
   email: {
     type: String,
     minlength: 1,
-    trim: true,
-    required: true,
-    unique: true,
+    trim:true,
+    required:true,
+    unique:true,
     validate: {
       validator: (value) => {
          return Validator.isEmail(value);

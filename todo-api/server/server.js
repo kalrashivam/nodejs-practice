@@ -13,7 +13,18 @@ app.listen(8000,() => {
   console.log('listening on port 8000');
 });
 
-
+app.post('/sign-up',(req,res) => {
+  var body = lodash.pick(req.body, ['password','email']);
+  var user = new User({
+    email: body.email,
+    password: body.password
+  })
+  user.save().then((doc) => {
+     res.send(doc);
+  }, (e) => {
+    res.status(400).send(e);
+  })
+});
 
 app.post('/todos',(req,res) => {
  console.log(req.body);
@@ -75,7 +86,7 @@ app.get('/RemoveById/:id',(req,res) => {
 app.post('/update/:id',(req,res) => {
   var id =  req.params.id;
   console.log(id);
-  var body = lodash.pick(req,body, ['text','completed','reminder']);
+  var body = lodash.pick(req.body, ['text','completed','reminder']);
   if(!ObjectId.isValid(id)) {
     return res.status(404).send();
   }
