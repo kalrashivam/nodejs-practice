@@ -9,19 +9,22 @@ var app = express();
 
 app.use(bodyparser.json());
 
-app.listen(8000,() => {
-  console.log('listening on port 8000');
+app.listen(7000,() => {
+  console.log('listening on port 7000');
 });
 
-app.post('/sign-up',(req,res) => {
+app.post('/users',(req,res) => {
   var body = lodash.pick(req.body, ['password','email']);
   var user = new User({
     email: body.email,
     password: body.password
-  })
-  user.save().then((doc) => {
-     res.send(doc);
-  }, (e) => {
+  });
+  user.save().then(() => {
+     return user.generateAuthToken();
+     //res.send(doc);
+  }).then((token) => {
+    res.header('X-auth', token).send(user);
+  }).catch((e) => {
     res.status(400).send(e);
   })
 });
