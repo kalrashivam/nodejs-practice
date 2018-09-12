@@ -29,6 +29,20 @@ app.post('/users',(req,res) => {
   })
 });
 
+app.get('/users/me', (req,res) => {
+  token = req.header('X-auth');
+
+  User.findByToken(token).then((user) => {
+    if (!user) {
+      res.status(401).send('no such user');
+    }
+
+    res.send(user);
+  }).catch((e) => {
+    res.status(401).send('not authorised');
+  });
+});
+
 app.post('/todos',(req,res) => {
  console.log(req.body);
  var todo = new Todo({
