@@ -5,6 +5,7 @@ var {Todo} = require('./models/todo.js');
 var {User} = require('./models/user.js');
 const lodash = require('lodash');
 var {ObjectId} = require('mongodb');
+var {authenticate} = require('./middleware/authenticate.js');
 var app = express();
 
 app.use(bodyparser.json());
@@ -29,18 +30,10 @@ app.post('/users',(req,res) => {
   })
 });
 
-app.get('/users/me', (req,res) => {
-  token = req.header('X-auth');
 
-  User.findByToken(token).then((user) => {
-    if (!user) {
-      res.status(401).send('no such user');
-    }
 
-    res.send(user);
-  }).catch((e) => {
-    res.status(401).send('not authorised');
-  });
+app.get('/users/me', authenticate,(req,res) => {
+  res.send(req.user);
 });
 
 app.post('/todos',(req,res) => {
