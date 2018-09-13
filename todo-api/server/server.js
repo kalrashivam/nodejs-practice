@@ -91,10 +91,13 @@ app.get('/todos', authenticate ,(req,res) => {
 //   }).catch(function(e){  console.log(e);})
 // });
 
-app.get('/Byid/:id',(req,res) => {
+app.get('/Byid/:id', authenticate ,(req,res) => {
   console.log(JSON.stringify(req.params));
   id = req.params.id;
-  User.findById(id).then((user) =>{
+  User.findOne({
+    _id: id,
+    _creater: req.user._id
+  }).then((user) =>{
     if(user){
       res.send(user);
     }else {
@@ -103,10 +106,13 @@ app.get('/Byid/:id',(req,res) => {
   }).catch(function(e){  console.log(e);})
 });
 
-app.get('/RemoveById/:id',(req,res) => {
+app.get('/RemoveById/:id', authenticate ,(req,res) => {
   console.log(JSON.stringify(req.params));
   id = req.params.id;
-  Todo.findByIdAndRemove(id).then((todo) =>{
+  Todo.findOneAndRemove({
+    _id: id,
+    _creater: req.user._id
+  }).then((todo) =>{
     if(todo){
       res.send(todo);
     }else {
@@ -115,14 +121,17 @@ app.get('/RemoveById/:id',(req,res) => {
   }).catch(function(e){  console.log(e);})
 });
 
-app.post('/update/:id',(req,res) => {
+app.post('/update/:id', authenticate ,(req,res) => {
   var id =  req.params.id;
   console.log(id);
   var body = lodash.pick(req.body, ['text','completed','reminder']);
   if(!ObjectId.isValid(id)) {
     return res.status(404).send();
   }
-  Todo.findByIdAndUpdate(id,{
+  Todo.findOneAndUpdate({
+    _id:id,
+    _creater: req.user._id
+  },{
     $set: body
   },{
     new: true
