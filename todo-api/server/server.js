@@ -55,21 +55,24 @@ app.get('/users/me', authenticate,(req,res) => {
   res.send(req.user);
 });
 
-app.post('/todos',(req,res) => {
+app.post('/todos', authenticate ,(req,res) => {
  console.log(req.body);
  var todo = new Todo({
-   text: req.body.text
+   text: req.body.text,
+   _creater: req.user._id
  });
  todo.save().then((doc) => {
    res.send(doc);
  }, (e) => {
    res.status(400).send(e);
  })
-
 });
 
-app.get('/todos',(req,res) => {
-  Todo.find().then((doc) => {
+
+app.get('/todos', authenticate ,(req,res) => {
+  Todo.find({
+    _creater:req.user._id
+  }).then((doc) => {
     res.send((doc));
   },(error) => {
     res.status(400).send(e);
