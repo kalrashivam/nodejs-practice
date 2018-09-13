@@ -42,6 +42,14 @@ app.post('/users/login', (req,res) => {
   });
 })
 
+// Logout
+app.delete('/users/me/token', authenticate ,(req,res) => {
+  req.user.removeToken(req.token).then((res) => {
+    res.send('Logout succesfull');
+  }, (err) => {
+    res.status(400).send('Logout unsuccesfull');
+  });
+})
 
 app.get('/users/me', authenticate,(req,res) => {
   res.send(req.user);

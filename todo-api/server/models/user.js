@@ -89,6 +89,17 @@ var user = this;
 
 };
 
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+  return user.update({
+    $pull: {
+      tokens:{
+        token: token
+      }
+    }
+  })
+};
+
 
 
 UserSchema.pre('save', function (next) {
