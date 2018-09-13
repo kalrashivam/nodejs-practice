@@ -30,6 +30,17 @@ app.post('/users',(req,res) => {
   })
 });
 
+app.post('/users/login', (req,res) => {
+  var body = lodash.pick(req.body, ['password', 'email']);
+
+  User.findByCredentials(body.email,body.password).then((user) => {
+     return user.generateAuthToken().then((token) => {
+         res.header('X-auth', token).send(user);
+     });
+  }).catch((e) => {
+    res.header(400).send('check email or password');
+  });
+})
 
 
 app.get('/users/me', authenticate,(req,res) => {
