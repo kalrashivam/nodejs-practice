@@ -3,7 +3,7 @@ var express = require('express');
 const http = require('http');
 var hbs = require('handlebars');
 var socketIO = require('socket.io');
-const {generateMessage} = require('./utils/message.js');
+const {generateMessage, generateLocation} = require('./utils/message.js');
 
 app = express();
 const publicPath = path.join(__dirname, '../public');
@@ -30,13 +30,17 @@ io.on('connection', (socket) => {
 
 
   socket.on('createMessage',(message) => {
-    console.log('user 1', message);
     io.emit('getMessage',generateMessage(message.from,message.text));
     // socket.broadcast.emit('getMessage',{
     //   text:message.text,
     //   user:message.user,
     //   createdAt: message.createdAt
     // });
+});
+
+
+socket.on('sharelocation',(location) => {
+  io.emit('getLocation',generateLocation(location.from,location.longitude,location.latitude));
 });
 
 
