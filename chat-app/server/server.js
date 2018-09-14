@@ -23,6 +23,23 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (socket) => {
     console.log('user disconnected');
   });
+
+  socket.on('createMessage',(message) => {
+    message.createdAt = new Date().getTime();
+    console.log('user 1', message);
+    io.emit('getMessage',{
+      text:message.text,
+      user:message.user,
+      createdAt: message.createdAt
+    });
+  });
+
+  socket.emit('getMessage',{
+    text:"this is a trial message",
+    user:"jacob",
+    createdAt: new Date().getTime()
+  });
+
 });
 
 
