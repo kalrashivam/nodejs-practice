@@ -8,7 +8,7 @@ const {generateMessage, generateLocation} = require('./utils/message.js');
 app = express();
 const publicPath = path.join(__dirname, '../public');
 // for heroku
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.use(express.static(publicPath));
 app.set('viewengine', 'hbs');
 

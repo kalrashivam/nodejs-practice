@@ -3,21 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="author" content="Shivam Kalra">
+<link type="text/css" rel="stylesheet" href="/css/stylesheet.css" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans Condensed:300italic,300,700" rel="stylesheet" type="text/css">
+
 </head>
-<body>
-<h3>
-  Trying it out
-</h3>
+<body class ="chat">
+<!--
+<header class="homebanner">
 
-<ol id ="messages">
+  		<h1 class="homebannertext">
+  			<a href="#">Shivam's <span>Chat - app </span></a>
+  		</h1>
 
-</ol>
+</header> -->
 
-<form id="form-element">
-<input name="message" type="text" placeholder="Message">
-<button>Send</button>
-</form>
-<button id ="location">Send location</button>
+<div class="chat__sidebar">
+<h3>People</h3>
+<div id = "users"></div>
+</div>
+
+
+<div class="chat__main">
+  <ol class="chat__messages" id ="messages">
+    <!-- The chat messages will go here -->
+  </ol>
+
+  <div class="chat__footer">
+    <form id="form-element">
+
+      <textarea id="message" name="message" placeholder="Write something.."></textarea>
+      <button id="submit">Send</button>
+      <button id="location">Send location</button>
+
+    </form>
+  </div>
+
+
+</div>
 
 <script src= "/socket.io/socket.io.js"></script>
 <script src= "/js/libs/jquery-3.3.1.min.js"></script>
