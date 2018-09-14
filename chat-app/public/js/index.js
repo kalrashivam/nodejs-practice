@@ -10,9 +10,13 @@ socket.on('disconnect', () => {
 
 socket.emit('createMessage',{
   text:"this is a trial message",
-  user:"jacob"
+  from:"jacob"
 });
 
 socket.on('getMessage', (message) => {
   console.log(message);
+});
+
+socket.on('adminmessage', (message) => {
+  console.log('admin message \n', message);
 });

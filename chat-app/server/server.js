@@ -3,6 +3,7 @@ var express = require('express');
 const http = require('http');
 var hbs = require('handlebars');
 var socketIO = require('socket.io');
+const {generateMessage} = require('./utils/message.js');
 
 app = express();
 const publicPath = path.join(__dirname, '../public');
@@ -20,25 +21,37 @@ var io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('new user joined');
+
+
+    socket.emit('adminmessage', generateMessage('admin','welcome to the user'));
+
+    socket.broadcast.emit('adminmessage', generateMessage('admin','new user added'));
+
+
+
+  socket.on('createMessage',(message) => {
+    console.log('user 1', message);
+    io.emit('getMessage',generateMessage(message.from,message.text));
+    // socket.broadcast.emit('getMessage',{
+    //   text:message.text,
+    //   user:message.user,
+    //   createdAt: message.createdAt
+    // });
+});
+
+
+
+
+  // socket.emit('getMessage',{
+  //   text:"this is a trial message",
+  //   user:"jacob",
+  //   createdAt: new Date().getTime()
+  // });
+
   socket.on('disconnect', (socket) => {
     console.log('user disconnected');
   });
 
-  socket.on('createMessage',(message) => {
-    message.createdAt = new Date().getTime();
-    console.log('user 1', message);
-    io.emit('getMessage',{
-      text:message.text,
-      user:message.user,
-      createdAt: message.createdAt
-    });
-  });
-
-  socket.emit('getMessage',{
-    text:"this is a trial message",
-    user:"jacob",
-    createdAt: new Date().getTime()
-  });
 
 });
 
