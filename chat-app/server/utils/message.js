@@ -1,8 +1,11 @@
+var moment = require('moment');
+
+
 var generateMessage = (from,text) => {
   return {
     from,
     text,
-    createdAt: new Date().getTime()
+    createdAt: moment().valueOf()
   };
 };
 
@@ -11,7 +14,7 @@ var generateLocation = (from,latitude,longitude) => {
   return {
     from,
     url: url,
-    createdAt: new Date().getTime()
+    createdAt: moment().valueOf()
   }
 }
 
