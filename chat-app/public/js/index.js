@@ -13,6 +13,21 @@ socket.on('disconnect', () => {
 //   from:"jacob"
 // });
 
+
+function scrollToBottom() {
+  var messages = jQuery('#messages');
+  var newMsg = messages.children('li:last-child');
+
+ var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight= messages.prop('scrollHeight');
+  var newMessageHeight = newMsg.innerHeight();
+
+  if((clientHeight + scrollTop + newMessageHeight +scrollHeight) >= scrollHeight){
+    messages.scrollTop(scrollHeight);
+  }
+}
+
 socket.on('getMessage', (message) => {
   console.log(message);
   var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -26,6 +41,7 @@ socket.on('getMessage', (message) => {
   // msg = message.from + '  ' + message.text+' '+ formattedTime;
   // li.text(msg);
   jQuery('#messages').append(html);
+  scrollToBottom();
 });
 
 socket.on('getLocation', (message) => {
@@ -36,6 +52,7 @@ socket.on('getLocation', (message) => {
   a.attr('href', message.url);
   li.append(a);
   jQuery('#messages').append(li);
+  scrollToBottom();
 });
 
 
@@ -49,6 +66,7 @@ socket.on('adminmessage', (message) => {
     createdAt:formattedTime
   });
   jQuery('#messages').append(html);
+  scrollToBottom();
 });
 
 jQuery('#form-element').on('submit', function(e){
