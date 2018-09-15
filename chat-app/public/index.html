@@ -3,65 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="author" content="Shivam Kalra">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link type="text/css" rel="stylesheet" href="/css/stylesheet.css" />
-<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
-
-<link href="http://fonts.googleapis.com/css?family=Open+Sans Condensed:300italic,300,700" rel="stylesheet" type="text/css">
-
 </head>
-<body class ="chat">
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Shivam's Chat APP <span class="sr-only">(current)</span></a>
-            </li>
-          </ul>
-  </nav>
-
-
-<div class="chat__sidebar">
-<h3>People</h3>
-<div id = "users"></div>
-</div>
-
-
-<div class="chat__main">
-  <ol class="chat__messages" id ="messages">
-    <!-- The chat messages will go here -->
-  </ol>
-
-  <div class="chat__footer">
-    <form id="form-element">
-
-      <input type= "text" id="message" name="message" placeholder="Write something.."></textarea>
-      <button id="submit">Send</button>
-      <button id="location">Send location</button>
-
+<body class = "centered-form">
+  <div class= "centered-form__form">
+    <form action="/chat.html">
+      <div class= "form-field">
+        <h4>Join A Chat</h4>
+      </div>
+      <div class= "form-field">
+        <input type="text" name="name" placeholder="Display Name" autofocus/>
+      </div>
+      <div class= "form-field">
+        <input type="text" name="room" placeholder="Room Name" autofocus/>
+      </div>
+      <div class= "form-field">
+        <button>Join</button>
+      </div>
     </form>
   </div>
-
-
-</div>
-
-<script id ="message-template" type="text/template">
-  <li class="message">
-    <div class ="message__title">
-      <h4>{{from}}</h4>
-      <span>{{createdAt}}</span>
-    </div>
-    <div class="message__body">
-      <span>{{text}}</span>
-    </div>
-  </li>
-</script>
-
-<script src= "/socket.io/socket.io.js"></script>
-<script src= "/js/libs/jquery-3.3.1.min.js"></script>
-<script src= "/js/libs/moment.js"></script>
-<script src= "/js/libs/mustache.js"></script>
-<script src= "/js/index.js"></script>
-
-
 </body>
 </html>
