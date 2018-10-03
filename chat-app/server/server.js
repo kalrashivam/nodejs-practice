@@ -4,6 +4,7 @@ const http = require('http');
 var hbs = require('handlebars');
 var socketIO = require('socket.io');
 const {generateMessage, generateLocation} = require('./utils/message.js');
+const {isRealString} = require("./utils/validation.js");
 
 app = express();
 const publicPath = path.join(__dirname, '../public');
@@ -22,10 +23,6 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('new user joined');
 
-
-    socket.emit('adminmessage', generateMessage('admin','welcome to the user'));
-
-    socket.broadcast.emit('adminmessage', generateMessage('admin','new user added'));
 
 
 
@@ -57,6 +54,22 @@ socket.on('sharelocation',(location) => {
     console.log('user disconnected');
   });
 
+
+  socket.on('join',(params,callback) => {
+      if(!isRealString(params.name) || !isRealString(params.room)){
+        callback('Name and Room Are Required');
+      }
+
+      socket.join(params.room)
+
+
+    socket.emit('adminmessage', generateMessage('admin', 'welcome to the user'));
+
+    socket.broadcast.to(params.room).emit('adminmessage', generateMessage('admin', params.name +'  added'));
+
+
+      callback();
+  })
 
 });
 
