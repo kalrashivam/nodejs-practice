@@ -14,9 +14,14 @@ socket.on('connect', () => {
   });
 });
 
+
 socket.on('disconnect', () => {
   console.log('disconnected user');
-})
+});
+
+socket.on('updateUsersList', function(users) {
+  console.log('the users are ', users);
+});
 
 // socket.emit('createMessage',{
 //   text:"this is a trial message",

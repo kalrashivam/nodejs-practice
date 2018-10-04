@@ -5,6 +5,9 @@ var hbs = require('handlebars');
 var socketIO = require('socket.io');
 const {generateMessage, generateLocation} = require('./utils/message.js');
 const {isRealString} = require("./utils/validation.js");
+const {Users} = require("./utils/users.js");
+var users = new Users();
+
 
 app = express();
 const publicPath = path.join(__dirname, '../public');
@@ -51,16 +54,30 @@ socket.on('sharelocation',(location) => {
   // });
 
   socket.on('disconnect', (socket) => {
-    console.log('user disconnected');
+    
+    var user = users.removeUser(socket.id);
+    var txt = user.name + "removed from group";
+
+
+    if(user){
+      io.to(user.room).emit('updateUsersList', users.getUserList(user.room));
+      io.to(user.room).emit('getMessage',generateMessage('admin', txt));
+    }
   });
+
+ 
 
 
   socket.on('join',(params,callback) => {
       if(!isRealString(params.name) || !isRealString(params.room)){
-        callback('Name and Room Are Required');
+       return callback('Name and Room Are Required');
       }
 
       socket.join(params.room)
+      users.removeUser(socket.id);
+      users.addUser(socket.id, params.room, params.name);
+
+      io.to(params.room).emit('updateUsersList',users.getUserList(params.room));
 
 
     socket.emit('adminmessage', generateMessage('admin', 'welcome to the user'));
